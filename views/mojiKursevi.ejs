@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Svi kursevi</title>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Bootstrap Js CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/styleDefault.css" id="theme-stylesheet">
+
+    <script type="text/javascript" src="/javascripts/helper.js"></script>
+    <script type="text/javascript" src="/javascripts/popup.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <img src="/images/img6.png" alt="..." class="img-fluid rounded-circle iconsmall" id="profilnaSlika">
+            <div class="sidebartext" id="sidebartext">
+                <h4><%= imePrez[0].Ime%> <%= imePrez[0].Prezime%></h4>
+            </div>
+        </div>
+        <button type="button" id="sidebarCollapse" class="btn btn-secundary navbar-btn">
+            <i class="glyphicon glyphicon-align-left"></i>
+        </button>
+
+        <ul class="list-unstyled components">
+            <li>
+                <a href="/pocetnaProfesor">
+                    <i class="glyphicon glyphicon-home"></i>
+                    Početna
+                </a>
+            <li class="active">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                    <i class="glyphicon glyphicon-book"></i>
+                    Moji Kursevi
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="/users/kurseviProfesor">
+                            <i class="glyphicon glyphicon-tasks"></i>
+                            Detaljno
+                        </a>
+                    </li>
+                    <%  if(kursevi.length >= 1){
+                    for(var i=0; i < kursevi.length; i++) { %>
+                    <li><a href="/kursProfesor?kursId=<%= kursevi[i].KursId%>"><%= kursevi[i].NazivKursa %></a></li>
+
+                    <% }} %>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <!--Sidebar end -->
+    <!-- Page Content Holder -->
+    <div id="content" class="customWidth">
+        <!-- Header-->
+        <nav class="navbar navbar-default" id="nav">
+
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"> Detaljno </a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" id = "logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+        </nav>
+        <!--Header end-->
+        <div id="divButton">
+        <button class="button btn-info" id="dodajKursDugme" data-toggle="modal" data-target="#dodajKursModal"> Dodaj
+            kurs
+        </button>
+        </div>
+        <!--Table for courses-->
+        <div class="table-striped" id="tabela">
+            <table class="table">
+                <th>Naziv Kursa</th>
+                <th>Semestar</th>
+                <th>Ciklus</th>
+                <th>Sifra kursa</th>
+                <% if(kursevi.length >= 1){
+                for(var i = 0; i < kursevi.length; i++) {
+                %>
+                <tr>
+                    <td><a href="/kursProfesor?kursId=<%= kursevi[i].KursId%>"> <%= kursevi[i].NazivKursa %></a></td>
+                    <td><%= kursevi[i].Semestar %></td>
+                    <td><%= kursevi[i].Ciklus %></td>
+                    <td><%= kursevi[i].SifraKursa %></td>
+                </tr>
+                <% }} %>
+            </table>
+        </div>
+        <!--Table end-->
+
+        <!--Creating Course-->
+
+
+        <div class="modal fade" id="dodajKursModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content" id="modal-content">
+
+                    <div class="modal-header green" >
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title green">Kreiranje kursa</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <p>Kurs</p>
+                            <input type="text" name="naziv_kursa" id="naziv_kursa" placeholder="Unesi naziv kursa" required="required">
+                            <div class="validacija" id="validator_naziv_kursa"> </div>
+                            <p>Semestar</p>
+                            <input type="text" name="semestar" id="semestar" placeholder="Unesi semestar" required="required">
+                            <div class="validacija" id="validator_sem"> </div>
+                            <p>Ciklus</p>
+                            <input type="text" name="ciklus" id="ciklus" placeholder="Unesi ciklus" required="required">
+                            <div class="validacija" id="validator_ciklus"> </div>
+                            <p>Šifra kursa</p>
+                            <input type="text" name="sifra_kursa" id="sifra_kursa" placeholder="Unesi šifru kursa"
+                                   required="required">
+                            <div class="validacija" id="validator_sifra_kursa"> </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="submit" class="button" value="Kreiraj" onclick="kreirajKurs();" >
+                        <button type="button" class="button" data-dismiss="modal">Odustani</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!--Create Course end -->
+
+    </div>
+</div>
+</body>
+</html>
